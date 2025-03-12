@@ -16,33 +16,17 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- nvim-cmp should be inside spec
-    {
-      "hrsh7th/nvim-cmp",
-      event = "InsertEnter", -- Ensures it loads when entering Insert mode
-      config = function()
-        local cmp = require("cmp")
-        cmp.setup({
-          mapping = cmp.mapping.preset.insert({
-            ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-            ["<C-e>"] = cmp.mapping.abort(),
-          }),
-          sources = cmp.config.sources({
-            { name = "nvim_lsp" },
-            { name = "buffer" },
-          }),
-        })
-      end
-    },
-
-    -- LazyVim and plugins
+    -- ✅ LazyVim core
     {
       "LazyVim/LazyVim",
       import = "lazyvim.plugins",
       opts = {
         colorscheme = "solarized-osaka",
-      }
+      },
+      config = true, -- ✅ Ensure LazyVim is automatically configured
     },
+
+    -- ✅ Import additional user plugins
     { import = "plugins" },
   },
 
@@ -51,7 +35,10 @@ require("lazy").setup({
     version = false,
   },
 
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = {
+    colorscheme = { "tokyonight", "habamax" },
+    ensure_installed = true, -- ✅ Forces missing plugins to install
+  },
 
   checker = {
     enabled = true,
